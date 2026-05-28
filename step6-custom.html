@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>自訂項目 - 馬星福德宮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{--red:#6E1E1E;--gold:#C8A44D;--cream:#F7F4EE;--white:#fff;--gray:#666;--success:#28A745}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:100px}
+    .container{max-width:600px;margin:0 auto;padding:15px}
+    .top-bar{text-align:center;padding:20px 15px 15px;background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;border-radius:0 0 20px 20px;margin-bottom:20px}
+    .top-bar .temple-icon{font-size:40px;margin-bottom:5px}
+    .top-bar h1{font-size:20px;margin:0;letter-spacing:2px}
+    .top-bar p{font-size:12px;opacity:.8;margin-top:3px}
+    .progress{display:flex;gap:3px;margin-bottom:20px;background:white;border-radius:12px;padding:12px 8px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto}
+    .step-dot{text-align:center;min-width:40px;flex:1}
+    .step-dot .dot{width:24px;height:24px;border-radius:50%;background:#ddd;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#666}
+    .step-dot.done .dot{background:var(--success);color:white}
+    .step-dot.now .dot{background:var(--red);color:white}
+    .step-dot span{font-size:9px;color:#666;display:block}
+    .card{background:white;border-radius:16px;padding:25px 20px;box-shadow:0 3px 15px rgba(0,0,0,.06);margin-bottom:15px}
+    .card h2{color:var(--red);font-size:18px;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+    .custom-item{display:flex;align-items:center;gap:10px;padding:14px;border:2px solid #eee;border-radius:12px;margin-bottom:8px;flex-wrap:wrap}
+    .custom-item:active{border-color:var(--gold);background:#FFF8E1}
+    .custom-item .item-name{flex:2;font-weight:600;font-size:14px;min-width:100px}
+    .custom-item .item-price{color:var(--red);font-weight:bold;font-size:14px;white-space:nowrap}
+    .custom-item input[type=number]{width:70px;padding:10px;border:2px solid #e0e0e0;border-radius:8px;text-align:center;font-size:15px}
+    .custom-item input[type=number]:focus{outline:none;border-color:var(--gold)}
+    .empty-state{text-align:center;padding:40px 20px;color:#999}
+    .empty-state i{font-size:40px;display:block;margin-bottom:10px;color:#ddd}
+    .skip-link{text-align:center;margin-top:5px}
+    .skip-link a{color:#999;text-decoration:none;font-size:13px}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 15px;box-shadow:0 -2px 10px rgba(0,0,0,.08);display:flex;gap:10px;z-index:100}
+    .btn{display:flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:10px;font-weight:700;cursor:pointer;transition:.2s;flex:1;padding:16px;font-size:16px}
+    .btn:active{transform:scale(.97)}
+    .btn-primary{background:var(--red);color:white}
+    .btn-secondary{background:var(--cream);color:var(--red);border:2px solid var(--red)}
+    .sync-bar{text-align:center;font-size:11px;color:#999;padding:8px;margin-top:10px}
+    @media(min-width:768px){.container{max-width:600px}}
+    @media(max-width:400px){.custom-item{flex-direction:column;align-items:stretch;text-align:center}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar"><div class="temple-icon">🛕</div><h1>馬星福德宮</h1><p>七月普渡法會 · 線上報名</p></div>
+  <div class="progress">
+    <div class="step-dot done"><div class="dot">1</div><span>香客</span></div>
+    <div class="step-dot done"><div class="dot">2</div><span>往生</span></div>
+    <div class="step-dot done"><div class="dot">3</div><span>冤親</span></div>
+    <div class="step-dot done"><div class="dot">4</div><span>嬰靈</span></div>
+    <div class="step-dot done"><div class="dot">5</div><span>福桶</span></div>
+    <div class="step-dot now"><div class="dot">6</div><span>自訂</span></div>
+    <div class="step-dot"><div class="dot">7</div><span>確認</span></div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-list-alt"></i> 自訂項目</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:15px">以下項目由廟方設定，請選擇數量</p>
+    <div id="list"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>載入中...</p></div></div>
+    <div class="skip-link"><a onclick="goTo(7)">若無此項目，跳過 →</a></div>
+  </div>
+  <div class="sync-bar" id="syncBar"><span id="syncText">☁️ 檢查中...</span></div>
+</div>
+
+<div class="bottom-nav">
+  <button class="btn btn-secondary" onclick="goTo(5)">上一步</button>
+  <button class="btn btn-primary" onclick="goTo(7)">下一步 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+let customItems=[],savedQtys={};
+async function init(){await loadItems();checkSync();}
+async function checkSync(){try{await fetch(CONFIG.API_URL+'?action=health');document.getElementById('syncBar').innerHTML='<span style="color:#28A745">☁️ 已連接</span>';}catch(e){document.getElementById('syncBar').innerHTML='<span style="color:#DC3545">⚠️ 離線</span>';}}
+async function loadItems(){
+  try{
+    const r=await fetch(CONFIG.API_URL,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'action=getSettings'});
+    const d=await r.json();
+    if(d.success&&d.settings&&d.settings.customItems){
+      const items=typeof d.settings.customItems==='string'?JSON.parse(d.settings.customItems):d.settings.customItems;
+      customItems=items.map(it=>({...it,quantity:0}));
+    }
+  }catch(e){}
+  const s=localStorage.getItem('reg_custom');if(s)try{savedQtys=JSON.parse(s);customItems.forEach(it=>{if(savedQtys[it.id])it.quantity=savedQtys[it.id];});}catch(e){}
+  render();
+}
+function saveData(){const q={};customItems.forEach(it=>{if(it.quantity>0)q[it.id]=it.quantity;});localStorage.setItem('reg_custom',JSON.stringify(q));}
+function updateQty(i,q){customItems[i].quantity=parseInt(q)||0;saveData();}
+function render(){
+  const c=document.getElementById('list');
+  if(!customItems.length){c.innerHTML='<div class="empty-state"><i class="fas fa-list-alt"></i><p>暫無自訂項目</p></div>';return;}
+  c.innerHTML=customItems.map((it,i)=>`<div class="custom-item">
+    <div class="item-name">${escapeHtml(it.name)}${it.description?`<br><small style="color:#999;font-weight:normal">${escapeHtml(it.description)}</small>`:''}</div>
+    <div class="item-price">RM ${(it.price||0).toLocaleString()}</div>
+    <input type="number" min="0" max="100" value="${it.quantity}" onchange="updateQty(${i},this.value)">
+    <span style="font-size:12px;color:#666">份</span>
+  </div>`).join('');
+}
+function goTo(s){saveData();const p={1:'step1-applicant.html',2:'step2-deceased.html',3:'step3-karmic.html',4:'step4-spirit-baby.html',5:'step5-blessing-bucket.html',6:'step6-custom.html',7:'step7-confirm.html'};window.location.href=p[s];}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

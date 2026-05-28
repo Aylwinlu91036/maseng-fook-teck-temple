@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>香客資料 - 馬星福德宮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{--red:#6E1E1E;--gold:#C8A44D;--cream:#F7F4EE;--white:#fff;--gray:#666;--danger:#DC3545;--success:#28A745}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:100px}
+    .container{max-width:600px;margin:0 auto;padding:15px}
+    
+    /* 頂部 */
+    .top-bar{text-align:center;padding:20px 15px 15px;background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;border-radius:0 0 20px 20px;margin-bottom:20px}
+    .top-bar .temple-icon{font-size:40px;margin-bottom:5px}
+    .top-bar h1{font-size:20px;margin:0;letter-spacing:2px}
+    .top-bar p{font-size:12px;opacity:.8;margin-top:3px}
+    
+    /* 進度條 */
+    .progress{display:flex;gap:3px;margin-bottom:20px;background:white;border-radius:12px;padding:12px 8px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto}
+    .step-dot{text-align:center;min-width:40px;flex:1}
+    .step-dot .dot{width:24px;height:24px;border-radius:50%;background:#ddd;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#666}
+    .step-dot.done .dot{background:var(--success);color:white}
+    .step-dot.now .dot{background:var(--red);color:white}
+    .step-dot span{font-size:9px;color:#666;display:block}
+    
+    /* 表單卡片 */
+    .card{background:white;border-radius:16px;padding:25px 20px;box-shadow:0 3px 15px rgba(0,0,0,.06);margin-bottom:15px}
+    .card h2{color:var(--red);font-size:18px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+    
+    /* 價格資訊條 */
+    .price-info{background:#F0F8FF;border:1px solid #B8D4E8;border-radius:10px;padding:12px 15px;margin-bottom:20px;font-size:12px;color:#1A5276;text-align:center;line-height:1.6}
+    .price-info strong{color:var(--red)}
+    
+    .form-group{margin-bottom:18px}
+    .form-group label{display:block;margin-bottom:6px;font-weight:600;color:#333;font-size:14px}
+    .form-group .required::after{content:' *';color:var(--danger)}
+    .form-control{width:100%;padding:14px 16px;border:2px solid #e0e0e0;border-radius:10px;font-size:16px;transition:.3s;-webkit-appearance:none;background:#FAFAFA}
+    .form-control:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,77,.15);background:white}
+    textarea.form-control{resize:vertical;min-height:70px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    
+    .btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:17px;font-weight:700;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-primary{background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;box-shadow:0 4px 15px rgba(110,30,30,.3)}
+    .btn-primary:active{transform:scale(.98)}
+    .btn-outline{background:white;color:var(--red);border:2px solid var(--red)}
+    
+    .history-section{margin-top:20px;padding-top:20px;border-top:1px solid #eee}
+    .history-item{padding:14px;border:1px solid #eee;border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.2s;font-size:14px}
+    .history-item:active{background:#FFF8E1;border-color:var(--gold)}
+    
+    /* 底部導航 */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 15px;box-shadow:0 -2px 10px rgba(0,0,0,.08);display:flex;gap:10px;z-index:100}
+    
+    .sync-bar{text-align:center;font-size:11px;color:#999;padding:8px;margin-top:10px}
+    .sync-bar.online{color:var(--success)}
+    .sync-bar.offline{color:var(--danger)}
+    
+    @media(min-width:768px){.container{max-width:650px;padding:25px}.card{padding:30px}.btn{border-radius:10px}}
+    @media(max-width:400px){.form-row{grid-template-columns:1fr}.card{padding:20px 15px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- 頂部 -->
+  <div class="top-bar">
+    <div class="temple-icon">🛕</div>
+    <h1>馬星福德宮</h1>
+    <p>七月普渡法會 · 線上報名</p>
+  </div>
+
+  <!-- 進度條 -->
+  <div class="progress">
+    <div class="step-dot now"><div class="dot">1</div><span>香客資料</span></div>
+    <div class="step-dot"><div class="dot">2</div><span>往生壇</span></div>
+    <div class="step-dot"><div class="dot">3</div><span>冤親債主</span></div>
+    <div class="step-dot"><div class="dot">4</div><span>嬰血靈</span></div>
+    <div class="step-dot"><div class="dot">5</div><span>福桶</span></div>
+    <div class="step-dot"><div class="dot">6</div><span>自訂</span></div>
+    <div class="step-dot"><div class="dot">7</div><span>確認</span></div>
+  </div>
+
+  <!-- 表單 -->
+  <div class="card">
+    <h2><i class="fas fa-user"></i> 香客資料</h2>
+    
+    <div class="price-info" id="priceInfo">
+      <i class="fas fa-spinner fa-spin"></i> 正在載入價格資訊...
+    </div>
+    
+    <div class="form-group"><label class="required">姓名</label><input type="text" id="name" class="form-control" placeholder="請輸入您的姓名" required autocomplete="name"></div>
+    <div class="form-group"><label class="required">電話</label><input type="tel" id="phone" class="form-control" placeholder="請輸入聯絡電話" required autocomplete="tel"></div>
+    <div class="form-group"><label>地址</label><textarea id="address" class="form-control" placeholder="請輸入地址（選填）" autocomplete="street-address"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>勸招人姓名</label><input type="text" id="refName" class="form-control" placeholder="選填"></div>
+      <div class="form-group"><label>勸招人電話</label><input type="tel" id="refPhone" class="form-control" placeholder="選填"></div>
+    </div>
+
+    <!-- 歷史資料搜尋 -->
+    <div class="history-section">
+      <h3 style="font-size:15px;color:var(--red);margin-bottom:10px"><i class="fas fa-history"></i> 搜尋過往資料</h3>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input type="text" id="searchInput" class="form-control" placeholder="輸入姓名或電話搜尋..." style="flex:1">
+        <button class="btn btn-outline" onclick="searchHistory()" style="width:auto;padding:14px 16px;font-size:14px"><i class="fas fa-search"></i></button>
+      </div>
+      <div id="historyResults"></div>
+    </div>
+  </div>
+
+  <!-- 同步狀態 -->
+  <div class="sync-bar online" id="syncBar"><span id="syncText">☁️ 檢查連接中...</span></div>
+</div>
+
+<!-- 底部導航 -->
+<div class="bottom-nav">
+  <button class="btn btn-primary" onclick="saveAndNext()">下一步 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+async function initPage() {
+  document.getElementById('priceInfo').innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在載入價格設定...';
+  await loadGlobalPrices();
+  document.getElementById('priceInfo').innerHTML = `
+    <i class="fas fa-check-circle" style="color:#28A745"></i>
+    往生壇 <strong>RM${getPrice('DECEASED')}</strong> | 冤親債主 <strong>RM${getPrice('KARMIC')}</strong> | 嬰血靈 <strong>RM${getPrice('SPIRIT_BABY')}</strong><br>
+    冥箱 <strong>RM${getPrice('BOX')}</strong> | 童箱 <strong>RM${getPrice('CHILD_BOX')}</strong> | 福桶 <strong>RM${getPrice('BUCKET')}</strong>
+  `;
+  checkSync();
+  loadData();
+}
+
+async function checkSync() {
+  try {
+    await fetch(CONFIG.API_URL+'?action=health');
+    document.getElementById('syncBar').className='sync-bar online';
+    document.getElementById('syncText').textContent='☁️ 已連接雲端';
+  } catch(e) {
+    document.getElementById('syncBar').className='sync-bar offline';
+    document.getElementById('syncText').textContent='⚠️ 離線模式（資料將暫存本地）';
+  }
+}
+
+function loadData() {
+  const d = localStorage.getItem('reg_applicant');
+  if (d) {
+    try {
+      const p = JSON.parse(d);
+      document.getElementById('name').value = p.name || '';
+      document.getElementById('phone').value = p.phone || '';
+      document.getElementById('address').value = p.address || '';
+      document.getElementById('refName').value = p.referrerName || '';
+      document.getElementById('refPhone').value = p.referrerPhone || '';
+    } catch(e) {}
+  }
+}
+
+function saveData() {
+  localStorage.setItem('reg_applicant', JSON.stringify({
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    referrerName: document.getElementById('refName').value.trim(),
+    referrerPhone: document.getElementById('refPhone').value.trim()
+  }));
+}
+
+function saveAndNext() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  if (!name) { alert('請輸入姓名'); document.getElementById('name').focus(); return; }
+  if (!phone) { alert('請輸入電話'); document.getElementById('phone').focus(); return; }
+  saveData();
+  window.location.href = 'step2-deceased.html';
+}
+
+async function searchHistory() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) { alert('請輸入搜尋關鍵字'); return; }
+  try {
+    const r = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=searchHistory&data=' + encodeURIComponent(JSON.stringify({ query: q }))
+    });
+    const d = await r.json();
+    const c = document.getElementById('historyResults');
+    if (d.success && d.records.length > 0) {
+      c.innerHTML = d.records.map(r => `
+        <div class="history-item" onclick="applyHistory('${r.id}')">
+          <strong>${escapeHtml(r.name)}</strong> - ${r.phone}
+          <br><small style="color:#999">訂單: ${r.orderNumber||'—'} | ${formatDate(r.createdAt)}</small>
+        </div>`).join('');
+    } else {
+      c.innerHTML = '<p style="color:#999;text-align:center;padding:15px">沒有找到相關記錄</p>';
+    }
+  } catch(e) { alert('搜索失敗，請檢查網絡連接'); }
+}
+
+async function applyHistory(id) {
+  try {
+    const r = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=getOrder&data=' + encodeURIComponent(JSON.stringify({ orderId: id }))
+    });
+    const d = await r.json();
+    if (d && d.applicant) {
+      document.getElementById('name').value = d.applicant.name || '';
+      document.getElementById('phone').value = d.applicant.phone || '';
+      document.getElementById('address').value = d.applicant.address || '';
+      document.getElementById('refName').value = d.applicant.referrerName || '';
+      document.getElementById('refPhone').value = d.applicant.referrerPhone || '';
+      alert('已套用歷史資料！');
+    }
+  } catch(e) { alert('載入失敗'); }
+}
+
+document.addEventListener('DOMContentLoaded', initPage);
+</script>
+</body>
+</html>

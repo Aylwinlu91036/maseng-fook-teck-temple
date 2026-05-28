@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>確認送出 - 馬星福德宮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{--red:#6E1E1E;--gold:#C8A44D;--cream:#F7F4EE;--white:#fff;--gray:#666;--danger:#DC3545;--success:#28A745;--blue:#1A5276}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:120px}
+    .container{max-width:650px;margin:0 auto;padding:15px}
+
+    /* 頂部 */
+    .top-bar{text-align:center;padding:20px 15px 15px;background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;border-radius:0 0 20px 20px;margin-bottom:20px}
+    .top-bar .temple-icon{font-size:40px;margin-bottom:5px}
+    .top-bar h1{font-size:20px;margin:0;letter-spacing:2px}
+    .top-bar p{font-size:12px;opacity:.8;margin-top:3px}
+
+    /* 進度條 */
+    .progress{display:flex;gap:3px;margin-bottom:20px;background:white;border-radius:12px;padding:12px 8px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto}
+    .step-dot{text-align:center;min-width:40px;flex:1}
+    .step-dot .dot{width:24px;height:24px;border-radius:50%;background:#ddd;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#666}
+    .step-dot.done .dot{background:var(--success);color:white}
+    .step-dot.now .dot{background:var(--red);color:white}
+    .step-dot span{font-size:9px;color:#666;display:block}
+
+    /* 卡片 */
+    .card{background:white;border-radius:16px;padding:20px 18px;box-shadow:0 3px 15px rgba(0,0,0,.06);margin-bottom:15px}
+    .card h2{color:var(--red);font-size:18px;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+
+    /* 價格資訊 */
+    .price-bar{background:#F0F8FF;border:1px solid #B8D4E8;border-radius:10px;padding:10px 12px;margin-bottom:15px;font-size:11px;color:var(--blue);text-align:center;line-height:1.6}
+    .price-bar strong{color:var(--red)}
+
+    /* 提示 */
+    .notice{background:#FFF3CD;border:1px solid #FFC107;border-radius:10px;padding:12px 14px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#856404;line-height:1.5}
+    .notice i{font-size:18px;margin-top:1px;color:#F57F17;flex-shrink:0}
+
+    /* 區塊 */
+    .section{margin-bottom:15px}
+    .section h3{background:var(--cream);padding:10px 14px;border-radius:8px;color:var(--red);font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .badge{background:var(--gold);color:white;padding:2px 8px;border-radius:12px;font-size:10px;margin-left:5px;font-weight:normal}
+
+    /* 資訊列 */
+    .info-row{display:flex;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+    .info-label{width:85px;font-weight:600;color:var(--gray);flex-shrink:0}
+    .info-value{flex:1;color:#333}
+
+    /* 表格 */
+    .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-bottom:8px;border-radius:8px;border:1px solid #eee}
+    table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+    th{background:var(--red);color:white;padding:8px 6px;text-align:center;font-weight:600;font-size:11px;white-space:nowrap}
+    td{padding:7px 6px;border-bottom:1px solid #eee;text-align:center;font-size:12px}
+    tr:last-child td{border-bottom:none}
+    tr:nth-child(even){background:#fafafa}
+
+    /* 總金額 */
+    .total-section{background:linear-gradient(135deg,var(--cream),#FFF8E1);padding:18px;border-radius:12px;text-align:center;border:2px solid var(--gold);margin-top:15px}
+    .total-label{font-size:14px;color:var(--gray)}
+    .total-amount{font-size:36px;font-weight:bold;color:var(--red);margin:5px 0}
+    .total-note{font-size:11px;color:#999}
+
+    /* 同意 */
+    .terms{display:flex;align-items:center;gap:10px;margin:18px 0;justify-content:center;font-size:14px;color:var(--gray)}
+    .terms input[type=checkbox]{width:22px;height:22px;accent-color:var(--red);flex-shrink:0}
+
+    /* 按鈕 */
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:12px;font-weight:700;cursor:pointer;transition:.2s;padding:16px;font-size:16px}
+    .btn:active{transform:scale(.97)}
+    .btn-primary{background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;box-shadow:0 4px 15px rgba(110,30,30,.3)}
+    .btn-secondary{background:var(--cream);color:var(--red);border:2px solid var(--red)}
+    .btn-success{background:linear-gradient(135deg,var(--success),#1e7e34);color:white;font-size:18px;padding:18px;box-shadow:0 4px 15px rgba(40,167,69,.3)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+    /* 底部 */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 15px;box-shadow:0 -2px 10px rgba(0,0,0,.08);display:flex;gap:10px;z-index:100}
+    .bottom-nav .btn{flex:1}
+    .submit-section{padding:15px;text-align:center}
+
+    /* 彈窗 */
+    .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:9999;align-items:center;justify-content:center;padding:20px}
+    .modal-overlay.active{display:flex}
+    .modal-box{background:white;border-radius:20px;padding:30px 25px;text-align:center;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .3s ease}
+    @keyframes popIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+    .success-icon{width:70px;height:70px;background:#D4EDDA;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px}
+    .success-icon i{font-size:35px;color:var(--success)}
+    .modal-box h2{color:var(--red);font-size:20px;margin-bottom:8px}
+    .order-number{font-size:26px;font-weight:bold;color:var(--red);background:var(--cream);padding:10px 16px;border-radius:10px;display:inline-block;margin:12px 0;border:2px dashed var(--gold);letter-spacing:2px;word-break:break-all}
+    .hint-text{color:#856404;font-size:13px;background:#FFF3CD;padding:10px 14px;border-radius:8px;margin:12px 0;line-height:1.5}
+    .action-buttons{display:flex;gap:8px;justify-content:center;margin-top:15px;flex-wrap:wrap}
+    .action-buttons .btn{font-size:14px;padding:12px 16px;flex:1;min-width:100px}
+
+    .sync-bar{text-align:center;font-size:11px;padding:8px;margin-top:10px}
+    .sync-bar.online{color:var(--success)}.sync-bar.offline{color:var(--danger)}
+
+    @media(min-width:768px){.container{max-width:700px;padding:25px}.card{padding:30px}.table-wrap{border-radius:10px}}
+    @media(max-width:400px){.card{padding:15px 12px}th,td{font-size:10px;padding:5px 4px}.total-amount{font-size:28px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- 頂部 -->
+  <div class="top-bar"><div class="temple-icon">🛕</div><h1>馬星福德宮</h1><p>七月普渡法會 · 線上報名</p></div>
+
+  <!-- 進度條 -->
+  <div class="progress">
+    <div class="step-dot done"><div class="dot">1</div><span>香客</span></div>
+    <div class="step-dot done"><div class="dot">2</div><span>往生</span></div>
+    <div class="step-dot done"><div class="dot">3</div><span>冤親</span></div>
+    <div class="step-dot done"><div class="dot">4</div><span>嬰靈</span></div>
+    <div class="step-dot done"><div class="dot">5</div><span>福桶</span></div>
+    <div class="step-dot done"><div class="dot">6</div><span>自訂</span></div>
+    <div class="step-dot now"><div class="dot">7</div><span>確認</span></div>
+  </div>
+
+  <!-- 主卡片 -->
+  <div class="card" id="summaryCard">
+    <h2><i class="fas fa-check-circle"></i> 確認報名資料</h2>
+
+    <!-- 價格欄 -->
+    <div class="price-bar" id="priceBar"><i class="fas fa-spinner fa-spin"></i> 載入價格中...</div>
+
+    <!-- 重要提示 -->
+    <div class="notice">
+      <i class="fas fa-info-circle"></i>
+      <div>提交後將生成<strong>訂單確認編號</strong>，非正式收據。<br>正式<strong>收據號碼</strong>將於付款後由工作人員分配。</div>
+    </div>
+
+    <!-- 香客資料 -->
+    <div class="section">
+      <h3><i class="fas fa-user"></i> 香客資料</h3>
+      <div class="info-row"><span class="info-label">姓名</span><span class="info-value" id="sName">—</span></div>
+      <div class="info-row"><span class="info-label">電話</span><span class="info-value" id="sPhone">—</span></div>
+      <div class="info-row" id="addrRow" style="display:none"><span class="info-label">地址</span><span class="info-value" id="sAddr">—</span></div>
+      <div class="info-row" id="refRow" style="display:none"><span class="info-label">勸招人</span><span class="info-value" id="sRef">—</span></div>
+    </div>
+
+    <!-- 往生壇 -->
+    <div class="section" id="decSection" style="display:none">
+      <h3><i class="fas fa-pray"></i> 往生壇 <span class="badge" id="decCount">0</span></h3>
+      <div class="table-wrap"><table><thead><tr><th>姓名</th><th>性別</th><th>輩分</th><th>蓮位</th><th>男冥箱</th><th>女冥箱</th><th>備註</th></tr></thead><tbody id="decBody"></tbody></table></div>
+    </div>
+
+    <!-- 冤親債主 -->
+    <div class="section" id="karSection" style="display:none">
+      <h3><i class="fas fa-hands"></i> 冤親債主 <span class="badge" id="karCount">0</span></h3>
+      <div class="table-wrap"><table><thead><tr><th>陽居者</th><th>蓮位</th><th>備註</th></tr></thead><tbody id="karBody"></tbody></table></div>
+    </div>
+
+    <!-- 嬰血靈 -->
+    <div class="section" id="spiSection" style="display:none">
+      <h3><i class="fas fa-baby"></i> 嬰血靈 <span class="badge" id="spiCount">0</span></h3>
+      <div class="table-wrap"><table><thead><tr><th>關係</th><th>父母</th><th>靈名</th><th>性別</th><th>蓮位</th><th>男童箱</th><th>女童箱</th><th>備註</th></tr></thead><tbody id="spiBody"></tbody></table></div>
+    </div>
+
+    <!-- 福桶 -->
+    <div class="section" id="bucSection" style="display:none">
+      <h3><i class="fas fa-box"></i> 福桶</h3>
+      <div class="info-row"><span class="info-label">數量</span><span class="info-value" id="bucQty">0 個</span></div>
+      <div class="info-row"><span class="info-label">處理</span><span class="info-value" id="bucHand">—</span></div>
+    </div>
+
+    <!-- 自訂項目 -->
+    <div class="section" id="cusSection" style="display:none">
+      <h3><i class="fas fa-list-alt"></i> 自訂項目</h3>
+      <div class="table-wrap"><table><thead><tr><th>項目</th><th>數量</th><th>單價</th><th>小計</th></tr></thead><tbody id="cusBody"></tbody></table></div>
+    </div>
+
+    <!-- 總金額 -->
+    <div class="total-section">
+      <div class="total-label">預估總金額</div>
+      <div class="total-amount">RM <span id="totalAmount">0</span></div>
+      <div class="total-note">實際金額以櫃檯確認為準</div>
+    </div>
+
+    <!-- 同意條款 -->
+    <div class="terms">
+      <input type="checkbox" id="agree" onchange="document.getElementById('submitBtn').disabled=!this.checked">
+      <label for="agree">我已確認以上資料無誤，同意提交報名申請</label>
+    </div>
+
+    <!-- 提交按鈕 -->
+    <div class="submit-section">
+      <button class="btn btn-success" id="submitBtn" onclick="submitReg()" disabled style="width:100%">
+        <i class="fas fa-paper-plane"></i> 確認送出報名申請
+      </button>
+    </div>
+  </div>
+
+  <!-- 底部按鈕 -->
+  <div class="submit-section" style="padding-bottom:80px">
+    <button class="btn btn-secondary" onclick="goTo(6)" style="width:100%">
+      <i class="fas fa-arrow-left"></i> 返回修改資料
+    </button>
+  </div>
+
+  <div class="sync-bar" id="syncBar"><span id="syncText">☁️ 檢查中...</span></div>
+</div>
+
+<!-- 加載彈窗 -->
+<div class="modal-overlay" id="loadingModal">
+  <div class="modal-box">
+    <i class="fas fa-spinner fa-spin" style="font-size:48px;color:var(--gold);margin-bottom:15px;display:block"></i>
+    <p style="font-size:16px">正在提交報名資料...</p>
+    <p style="color:#999;font-size:13px">請稍候，不要關閉頁面</p>
+  </div>
+</div>
+
+<!-- 成功彈窗 -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-box">
+    <div class="success-icon"><i class="fas fa-check"></i></div>
+    <h2>報名申請成功！</h2>
+    <p style="color:#666;font-size:14px">您的訂單確認編號：</p>
+    <div class="order-number" id="orderNumDisplay">—</div>
+    <div class="hint-text">
+      <strong>⚠️ 重要提醒：</strong>此為訂單確認編號，非正式收據。<br>請持此編號至櫃檯付款，以獲取正式收據號碼。
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="printConfirm()"><i class="fas fa-print"></i> 列印確認書</button>
+      <button class="btn btn-secondary" onclick="newReg()"><i class="fas fa-plus"></i> 新增報名</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+let regData = {};
+let submittedOrder = null;
+let customItemsInfo = [];
+
+function P(key) { return getPrice(key); }
+
+// 初始化
+async function initPage() {
+  document.getElementById('priceBar').innerHTML = '<i class="fas fa-spinner fa-spin"></i> 載入價格中...';
+  await loadGlobalPrices();
+  document.getElementById('priceBar').innerHTML = `
+    <i class="fas fa-check-circle" style="color:#28A745"></i>
+    往生壇 <strong>RM${P('DECEASED')}</strong> | 冤親債主 <strong>RM${P('KARMIC')}</strong> | 嬰血靈 <strong>RM${P('SPIRIT_BABY')}</strong> | 冥箱 <strong>RM${P('BOX')}</strong> | 童箱 <strong>RM${P('CHILD_BOX')}</strong> | 福桶 <strong>RM${P('BUCKET')}</strong>
+  `;
+  await loadCustomInfo();
+  checkSync();
+  loadAllData();
+  render();
+}
+
+async function checkSync() {
+  try {
+    await fetch(CONFIG.API_URL + '?action=health');
+    document.getElementById('syncBar').className = 'sync-bar online';
+    document.getElementById('syncText').textContent = '☁️ 已連接雲端';
+  } catch(e) {
+    document.getElementById('syncBar').className = 'sync-bar offline';
+    document.getElementById('syncText').textContent = '⚠️ 離線模式（資料暫存本地）';
+  }
+}
+
+async function loadCustomInfo() {
+  try {
+    const r = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=getSettings'
+    });
+    const d = await r.json();
+    if (d.success && d.settings && d.settings.customItems) {
+      customItemsInfo = typeof d.settings.customItems === 'string'
+        ? JSON.parse(d.settings.customItems)
+        : d.settings.customItems;
+    }
+  } catch(e) {}
+}
+
+function loadAllData() {
+  const keys = ['applicant', 'deceased', 'karmic', 'spirit', 'bucket', 'custom'];
+  const defaults = {
+    applicant: {},
+    deceased: [],
+    karmic: [],
+    spirit: [],
+    bucket: { quantity: 0, handling: '自行迎回' },
+    custom: {}
+  };
+  keys.forEach(k => {
+    const d = localStorage.getItem('reg_' + k);
+    regData[k] = d ? (() => { try { return JSON.parse(d); } catch(e) { return defaults[k]; } })() : defaults[k];
+  });
+}
+
+function render() {
+  const app = regData.applicant || {};
+  document.getElementById('sName').textContent = app.name || '—';
+  document.getElementById('sPhone').textContent = app.phone || '—';
+  if (app.address) { document.getElementById('addrRow').style.display = 'flex'; document.getElementById('sAddr').textContent = app.address; }
+  if (app.referrerName) { document.getElementById('refRow').style.display = 'flex'; document.getElementById('sRef').textContent = app.referrerName + (app.referrerPhone ? ' (' + app.referrerPhone + ')' : ''); }
+
+  // 往生壇
+  const dec = regData.deceased || [];
+  if (dec.length > 0) {
+    document.getElementById('decSection').style.display = 'block';
+    document.getElementById('decCount').textContent = dec.length + '筆';
+    document.getElementById('decBody').innerHTML = dec.map(it => `
+      <tr><td>${escapeHtml(it.name)||'—'}</td><td>${it.gender||'—'}</td><td>${escapeHtml(it.relationship)||'—'}</td><td>${it.lotusCount||1}</td><td>${it.maleBoxCount||0}</td><td>${it.femaleBoxCount||0}</td><td>${escapeHtml(it.note)||'—'}</td></tr>
+    `).join('');
+  }
+
+  // 冤親債主
+  const kar = regData.karmic || [];
+  if (kar.length > 0) {
+    document.getElementById('karSection').style.display = 'block';
+    document.getElementById('karCount').textContent = kar.length + '筆';
+    document.getElementById('karBody').innerHTML = kar.map(it => `
+      <tr><td>${escapeHtml(it.livingName)||'—'}</td><td>${it.lotusCount||1}</td><td>${escapeHtml(it.note)||'—'}</td></tr>
+    `).join('');
+  }
+
+  // 嬰血靈
+  const spi = regData.spirit || [];
+  if (spi.length > 0) {
+    document.getElementById('spiSection').style.display = 'block';
+    document.getElementById('spiCount').textContent = spi.length + '筆';
+    document.getElementById('spiBody').innerHTML = spi.map(it => `
+      <tr><td>${it.relation||'—'}</td><td>${escapeHtml(it.parentName)||'—'}</td><td>${escapeHtml(it.spiritName)||'—'}</td><td>${it.gender||'—'}</td><td>${it.lotusCount||1}</td><td>${it.maleBoxCount||0}</td><td>${it.femaleBoxCount||0}</td><td>${escapeHtml(it.note)||'—'}</td></tr>
+    `).join('');
+  }
+
+  // 福桶
+  const buc = regData.bucket || {};
+  if (buc.quantity > 0) {
+    document.getElementById('bucSection').style.display = 'block';
+    document.getElementById('bucQty').textContent = buc.quantity + ' 個';
+    document.getElementById('bucHand').textContent = buc.handling || '—';
+  }
+
+  // 自訂項目
+  const cus = regData.custom || {};
+  const cusKeys = Object.keys(cus).filter(k => cus[k] > 0);
+  if (cusKeys.length > 0) {
+    document.getElementById('cusSection').style.display = 'block';
+    document.getElementById('cusBody').innerHTML = cusKeys.map(k => {
+      const info = customItemsInfo.find(ci => ci.id === k) || {};
+      return `<tr><td>${escapeHtml(info.name||k)}</td><td>${cus[k]}</td><td>RM ${(info.price||0).toLocaleString()}</td><td>RM ${((info.price||0)*cus[k]).toLocaleString()}</td></tr>`;
+    }).join('');
+  }
+
+  calcTotal();
+}
+
+function calcTotal() {
+  let t = 0;
+  const pd = P('DECEASED'), pk = P('KARMIC'), ps = P('SPIRIT_BABY'), pb = P('BOX'), pc = P('CHILD_BOX'), pbu = P('BUCKET');
+  (regData.deceased||[]).forEach(it => { t += (it.lotusCount||1)*pd + (it.maleBoxCount||0)*pb + (it.femaleBoxCount||0)*pb; });
+  (regData.karmic||[]).forEach(it => { t += (it.lotusCount||1)*pk; });
+  (regData.spirit||[]).forEach(it => { t += (it.lotusCount||1)*ps + (it.maleBoxCount||0)*pc + (it.femaleBoxCount||0)*pc; });
+  t += (regData.bucket?.quantity||0) * pbu;
+  const cus = regData.custom || {};
+  Object.keys(cus).forEach(k => { if (cus[k] > 0) { const info = customItemsInfo.find(ci => ci.id === k) || {}; t += (info.price||0) * cus[k]; } });
+  document.getElementById('totalAmount').textContent = t.toLocaleString();
+}
+
+// 提交
+async function submitReg() {
+  if (!regData.applicant?.name || !regData.applicant?.phone) { alert('請先填寫香客資料'); return; }
+  document.getElementById('loadingModal').classList.add('active');
+  document.getElementById('submitBtn').disabled = true;
+  try {
+    const orderNumber = generateOrderNumber();
+    const cus = regData.custom || {};
+    const customArray = Object.keys(cus).filter(k => cus[k] > 0).map(k => {
+      const info = customItemsInfo.find(ci => ci.id === k) || {};
+      return { id: k, name: info.name || k, price: info.price || 0, quantity: cus[k] };
+    });
+    const items = {
+      deceased: regData.deceased || [],
+      karmic: regData.karmic || [],
+      spiritBaby: regData.spirit || [],
+      blessingBucket: (regData.bucket?.quantity > 0) ? [regData.bucket] : [],
+      custom: customArray
+    };
+    const totalAmount = parseInt(document.getElementById('totalAmount').textContent.replace(/,/g, ''));
+    const r = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'action=submitRegistration&data=' + encodeURIComponent(JSON.stringify({
+        draftToken: 'draft_' + Date.now(),
+        orderNumber: orderNumber,
+        applicant: regData.applicant,
+        items: items,
+        estimatedAmount: totalAmount
+      }))
+    });
+    const d = await r.json();
+    document.getElementById('loadingModal').classList.remove('active');
+    if (d.success) {
+      submittedOrder = { orderNumber, applicant: regData.applicant, items, totalAmount };
+      document.getElementById('orderNumDisplay').textContent = orderNumber;
+      document.getElementById('successModal').classList.add('active');
+      clearAll();
+    } else {
+      alert('提交失敗：' + (d.message || '未知錯誤'));
+      document.getElementById('submitBtn').disabled = false;
+    }
+  } catch(e) {
+    document.getElementById('loadingModal').classList.remove('active');
+    alert('網絡錯誤：' + e.message);
+    document.getElementById('submitBtn').disabled = false;
+  }
+}
+
+function printConfirm() {
+  const on = document.getElementById('orderNumDisplay').textContent;
+  const now = new Date().toLocaleString('zh-TW');
+  const app = regData.applicant || {};
+  const total = document.getElementById('totalAmount').textContent;
+  const w = window.open('', '_blank', 'width=800,height=600');
+  w.document.write(`<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><title>訂單確認書</title><style>@page{size:A4;margin:12mm}body{font-family:'PMingLiU','Microsoft JhengHei',serif;padding:15px;color:#2C2C2C;line-height:1.8}.box{border:2px solid #6E1E1E;padding:20px;max-width:700px;margin:0 auto}.hdr{text-align:center;border-bottom:2px solid #C8A44D;padding-bottom:12px;margin-bottom:15px}.hdr h1{color:#6E1E1E;margin:0;font-size:22px}.hdr h2{color:#C8A44D;font-size:14px;margin:3px 0}.onum{text-align:center;background:#F7F4EE;padding:12px;border-radius:6px;margin:10px 0;border:2px dashed #C8A44D;font-size:24px;font-weight:bold;color:#6E1E1E;letter-spacing:2px}.notice{background:#FFF3CD;padding:10px;border-radius:5px;font-size:12px;margin:10px 0}.total{text-align:right;font-size:18px;font-weight:bold;color:#6E1E1E;margin-top:10px}.footer{text-align:center;margin-top:15px;font-size:11px;color:#999;border-top:1px solid #ddd;padding-top:10px}@media print{body{margin:0}.no-print{display:none}}</style></head><body><div class="box"><div class="hdr"><h1>馬星福德宮</h1><h2>七月普渡法會 - 訂單確認書</h2></div><div class="onum">${on}</div><p style="font-size:12px;color:#999;text-align:center">提交時間：${now}</p><div class="notice"><strong>⚠️ 重要提示：</strong>此為訂單確認書，非正式收據。請持此確認書至櫃檯付款以獲取正式收據號碼。</div><p><strong>香客：</strong>${escapeHtml(app.name)}　<strong>電話：</strong>${escapeHtml(app.phone)}</p><p><strong>預估總金額：</strong>RM ${total}</p><div class="footer"><p>馬星福德宮 敬啟</p></div></div><div class="no-print" style="text-align:center;margin-top:15px"><button onclick="window.print()" style="padding:12px 30px;background:#6E1E1E;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer">🖨️ 列印確認書</button></div></body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 500);
+}
+
+function newReg() { clearAll(); window.location.href = 'step1-applicant.html'; }
+function clearAll() { ['applicant','deceased','karmic','spirit','bucket','custom'].forEach(k => localStorage.removeItem('reg_' + k)); }
+function goTo(s) {
+  const pages = { 1:'step1-applicant.html', 2:'step2-deceased.html', 3:'step3-karmic.html', 4:'step4-spirit-baby.html', 5:'step5-blessing-bucket.html', 6:'step6-custom.html', 7:'step7-confirm.html' };
+  window.location.href = pages[s];
+}
+
+document.addEventListener('DOMContentLoaded', initPage);
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>往生壇 - 馬星福德宮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{--red:#6E1E1E;--gold:#C8A44D;--cream:#F7F4EE;--white:#fff;--gray:#666;--danger:#DC3545;--success:#28A745}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:100px}
+    .container{max-width:600px;margin:0 auto;padding:15px}
+    .top-bar{text-align:center;padding:20px 15px 15px;background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;border-radius:0 0 20px 20px;margin-bottom:20px}
+    .top-bar .temple-icon{font-size:40px;margin-bottom:5px}
+    .top-bar h1{font-size:20px;margin:0;letter-spacing:2px}
+    .top-bar p{font-size:12px;opacity:.8;margin-top:3px}
+    .progress{display:flex;gap:3px;margin-bottom:20px;background:white;border-radius:12px;padding:12px 8px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto}
+    .step-dot{text-align:center;min-width:40px;flex:1}
+    .step-dot .dot{width:24px;height:24px;border-radius:50%;background:#ddd;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#666}
+    .step-dot.done .dot{background:var(--success);color:white}
+    .step-dot.now .dot{background:var(--red);color:white}
+    .step-dot span{font-size:9px;color:#666;display:block}
+    .card{background:white;border-radius:16px;padding:25px 20px;box-shadow:0 3px 15px rgba(0,0,0,.06);margin-bottom:15px}
+    .card h2{color:var(--red);font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .badge{background:var(--gold);color:white;padding:2px 10px;border-radius:12px;font-size:11px;margin-left:5px}
+    .price-info{background:#F0F8FF;border:1px solid #B8D4E8;border-radius:10px;padding:10px 15px;margin-bottom:15px;font-size:12px;color:#1A5276;text-align:center;line-height:1.6}
+    .toolbar{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+    .btn{display:flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+    .btn:active{transform:scale(.97)}
+    .btn-primary{background:var(--red);color:white;padding:10px 16px}
+    .btn-secondary{background:var(--cream);color:var(--red);border:2px solid var(--red);padding:10px 16px}
+    .btn-success{background:var(--success);color:white;padding:10px 16px}
+    .btn-danger{background:var(--danger);color:white;padding:6px 12px;font-size:12px}
+    .batch-area{background:#FFF8E1;border:2px dashed var(--gold);border-radius:10px;padding:15px;margin-bottom:15px;display:none}
+    .batch-area textarea{width:100%;min-height:100px;border:1px solid #ddd;border-radius:8px;padding:12px;font-family:monospace;font-size:14px;resize:vertical}
+    .hint{font-size:11px;color:#856404;margin-bottom:8px;line-height:1.5}
+    .item-card{background:#FAFAFA;border:2px solid #eee;border-radius:12px;padding:15px;margin-bottom:12px;transition:.2s}
+    .item-card:active{border-color:var(--gold)}
+    .item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee}
+    .item-number{background:var(--red);color:white;padding:3px 10px;border-radius:15px;font-size:12px;font-weight:bold}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    .form-row.three{grid-template-columns:1fr 1fr 1fr}
+    .form-group{margin-bottom:10px}
+    .form-group label{display:block;margin-bottom:4px;font-weight:600;color:#333;font-size:12px}
+    .form-control{width:100%;padding:12px 14px;border:2px solid #e0e0e0;border-radius:10px;font-size:15px;transition:.3s;-webkit-appearance:none;background:#FAFAFA}
+    .form-control:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,77,.15);background:white}
+    select.form-control{appearance:auto}
+    .price-note{font-size:11px;color:var(--success);margin-top:2px;font-weight:bold}
+    .subtotal{text-align:right;font-weight:bold;color:var(--red);margin-top:8px;font-size:14px}
+    .empty-state{text-align:center;padding:40px 20px;color:#999}
+    .empty-state i{font-size:40px;display:block;margin-bottom:10px;color:#ddd}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 15px;box-shadow:0 -2px 10px rgba(0,0,0,.08);display:flex;gap:10px;z-index:100}
+    .bottom-nav .btn{flex:1;padding:16px;font-size:16px;font-weight:700}
+    .sync-bar{text-align:center;font-size:11px;color:#999;padding:8px;margin-top:10px}
+    @media(min-width:768px){.container{max-width:700px}.form-row.three{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:400px){.form-row,.form-row.three{grid-template-columns:1fr}.card{padding:20px 12px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar"><div class="temple-icon">🛕</div><h1>馬星福德宮</h1><p>七月普渡法會 · 線上報名</p></div>
+  <div class="progress">
+    <div class="step-dot done"><div class="dot">1</div><span>香客資料</span></div>
+    <div class="step-dot now"><div class="dot">2</div><span>往生壇</span></div>
+    <div class="step-dot"><div class="dot">3</div><span>冤親債主</span></div>
+    <div class="step-dot"><div class="dot">4</div><span>嬰血靈</span></div>
+    <div class="step-dot"><div class="dot">5</div><span>福桶</span></div>
+    <div class="step-dot"><div class="dot">6</div><span>自訂</span></div>
+    <div class="step-dot"><div class="dot">7</div><span>確認</span></div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-pray"></i> 往生壇 <span class="badge" id="count">0 筆</span></h2>
+    <div class="price-info" id="priceInfo"><i class="fas fa-spinner fa-spin"></i> 載入價格中...</div>
+    
+    <div class="toolbar">
+      <button class="btn btn-primary" onclick="addItem()"><i class="fas fa-plus"></i> 新增</button>
+      <button class="btn btn-secondary" onclick="toggleBatch()"><i class="fas fa-paste"></i> 批量貼上</button>
+    </div>
+
+    <div class="batch-area" id="batchArea">
+      <div class="hint"><i class="fas fa-info-circle"></i> 每行一筆，Tab或空格分隔：<strong>姓名 性別 輩分 備註</strong><br>範例：林阿福&nbsp;&nbsp;男&nbsp;&nbsp;長子</div>
+      <textarea id="batchText" placeholder="貼上資料..."></textarea>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn btn-success" onclick="processBatch()" style="flex:1"><i class="fas fa-check"></i> 確認新增</button>
+        <button class="btn btn-secondary" onclick="toggleBatch()">取消</button>
+      </div>
+    </div>
+
+    <div id="list"><div class="empty-state"><i class="fas fa-pray"></i><p>尚無往生者資料</p><p style="font-size:12px">點擊上方按鈕新增或批量貼上</p></div></div>
+  </div>
+  <div class="sync-bar" id="syncBar"><span id="syncText">☁️ 檢查中...</span></div>
+</div>
+
+<div class="bottom-nav">
+  <button class="btn btn-secondary" onclick="goTo(1)" style="flex:1">上一步</button>
+  <button class="btn btn-primary" onclick="goTo(3)" style="flex:2">下一步 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+let items=[];
+function P(k){return getPrice(k);}
+
+async function init(){
+  document.getElementById('priceInfo').innerHTML='<i class="fas fa-spinner fa-spin"></i> 載入價格中...';
+  await loadGlobalPrices();
+  document.getElementById('priceInfo').innerHTML=`每位 <strong>RM${P('DECEASED')}</strong> | 冥箱 <strong>RM${P('BOX')}</strong>`;
+  checkSync(); loadData();
+}
+async function checkSync(){
+  try{await fetch(CONFIG.API_URL+'?action=health');document.getElementById('syncBar').innerHTML='<span style="color:#28A745">☁️ 已連接</span>';}catch(e){document.getElementById('syncBar').innerHTML='<span style="color:#DC3545">⚠️ 離線</span>';}
+}
+function loadData(){const d=localStorage.getItem('reg_deceased');if(d)try{items=JSON.parse(d);}catch(e){}render();}
+function saveData(){localStorage.setItem('reg_deceased',JSON.stringify(items));}
+function addItem(d){items.push(d||{id:Date.now(),name:'',gender:'—',unmarried:false,relationship:'',lotusCount:1,maleBoxCount:0,femaleBoxCount:0,note:''});saveData();render();}
+function removeItem(i){if(confirm('確定刪除？')){items.splice(i,1);saveData();render();}}
+function updateItem(i,f,v){if(items[i]){if(['lotusCount','maleBoxCount','femaleBoxCount'].includes(f)){items[i][f]=parseInt(v)||0;render();}else if(f==='unmarried')items[i][f]=v==='true'||v===true;else items[i][f]=v;saveData();}}
+function toggleBatch(){const a=document.getElementById('batchArea');a.style.display=a.style.display==='none'||!a.style.display?'block':'none';if(a.style.display==='block')document.getElementById('batchText').focus();}
+function processBatch(){
+  const t=document.getElementById('batchText').value.trim();if(!t)return;
+  t.split('\n').filter(l=>l.trim()).forEach(l=>{const p=l.split(/\t+|\s{2,}/).filter(x=>x.trim());if(p[0])items.push({id:Date.now()+Math.random(),name:p[0].trim(),gender:p[1]?(p[1].trim()==='男'?'男':p[1].trim()==='女'?'女':'—'):'—',unmarried:false,relationship:p[2]||'',lotusCount:1,maleBoxCount:0,femaleBoxCount:0,note:p[3]||''});});
+  saveData();render();document.getElementById('batchText').value='';toggleBatch();
+}
+function render(){
+  const c=document.getElementById('list'),dp=P('DECEASED'),bp=P('BOX');
+  if(!items.length){c.innerHTML='<div class="empty-state"><i class="fas fa-pray"></i><p>尚無往生者資料</p></div>';updateCount();return;}
+  c.innerHTML=items.map((it,i)=>`<div class="item-card">
+    <div class="item-header"><span class="item-number">#${i+1}</span><button class="btn btn-danger" onclick="removeItem(${i})"><i class="fas fa-trash"></i></button></div>
+    <div class="form-row"><div class="form-group"><label>姓名 *</label><input class="form-control" value="${escapeHtml(it.name)}" onchange="updateItem(${i},'name',this.value)" placeholder="往生者姓名"></div><div class="form-group"><label>性別</label><select class="form-control" onchange="updateItem(${i},'gender',this.value)"><option value="—" ${it.gender==='—'?'selected':''}>—</option><option value="男" ${it.gender==='男'?'selected':''}>男</option><option value="女" ${it.gender==='女'?'selected':''}>女</option></select></div></div>
+    <div class="form-row"><div class="form-group"><label>輩分</label><input class="form-control" value="${escapeHtml(it.relationship)}" onchange="updateItem(${i},'relationship',this.value)" placeholder="如：長子"></div><div class="form-group"><label>蓮位數量</label><input type="number" class="form-control" value="${it.lotusCount}" min="1" max="10" onchange="updateItem(${i},'lotusCount',this.value)"><span class="price-note">×RM${dp}=RM${(it.lotusCount||1)*dp}</span></div></div>
+    <div class="form-row"><div class="form-group"><label>男冥箱</label><input type="number" class="form-control" value="${it.maleBoxCount}" min="0" max="10" onchange="updateItem(${i},'maleBoxCount',this.value)"><span class="price-note">×RM${bp}=RM${(it.maleBoxCount||0)*bp}</span></div><div class="form-group"><label>女冥箱</label><input type="number" class="form-control" value="${it.femaleBoxCount}" min="0" max="10" onchange="updateItem(${i},'femaleBoxCount',this.value)"><span class="price-note">×RM${bp}=RM${(it.femaleBoxCount||0)*bp}</span></div></div>
+    <div class="form-group"><label>備註</label><input class="form-control" value="${escapeHtml(it.note)}" onchange="updateItem(${i},'note',this.value)" placeholder="備註（選填）"></div>
+    <div class="subtotal">小計: RM${((it.lotusCount||1)*dp+(it.maleBoxCount||0)*bp+(it.femaleBoxCount||0)*bp).toLocaleString()}</div>
+  </div>`).join('');
+  updateCount();
+}
+function updateCount(){document.getElementById('count').textContent=items.length+' 筆';}
+function goTo(s){saveData();const p={1:'step1-applicant.html',2:'step2-deceased.html',3:'step3-karmic.html',4:'step4-spirit-baby.html',5:'step5-blessing-bucket.html',6:'step6-custom.html',7:'step7-confirm.html'};window.location.href=p[s];}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

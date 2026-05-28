@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>福桶 - 馬星福德宮</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root{--red:#6E1E1E;--gold:#C8A44D;--cream:#F7F4EE;--white:#fff;--gray:#666;--success:#28A745}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;background:var(--cream);min-height:100vh;padding-bottom:100px}
+    .container{max-width:600px;margin:0 auto;padding:15px}
+    .top-bar{text-align:center;padding:20px 15px 15px;background:linear-gradient(135deg,var(--red),#8B2E2E);color:white;border-radius:0 0 20px 20px;margin-bottom:20px}
+    .top-bar .temple-icon{font-size:40px;margin-bottom:5px}
+    .top-bar h1{font-size:20px;margin:0;letter-spacing:2px}
+    .top-bar p{font-size:12px;opacity:.8;margin-top:3px}
+    .progress{display:flex;gap:3px;margin-bottom:20px;background:white;border-radius:12px;padding:12px 8px;box-shadow:0 2px 8px rgba(0,0,0,.05);overflow-x:auto}
+    .step-dot{text-align:center;min-width:40px;flex:1}
+    .step-dot .dot{width:24px;height:24px;border-radius:50%;background:#ddd;margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#666}
+    .step-dot.done .dot{background:var(--success);color:white}
+    .step-dot.now .dot{background:var(--red);color:white}
+    .step-dot span{font-size:9px;color:#666;display:block}
+    .card{background:white;border-radius:16px;padding:25px 20px;box-shadow:0 3px 15px rgba(0,0,0,.06);margin-bottom:15px}
+    .card h2{color:var(--red);font-size:18px;margin-bottom:15px;display:flex;align-items:center;gap:8px}
+    .price-info{background:#F0F8FF;border:1px solid #B8D4E8;border-radius:10px;padding:10px 15px;margin-bottom:20px;font-size:13px;color:#1A5276;text-align:center}
+    .bucket-icon{text-align:center;font-size:50px;color:var(--gold);margin-bottom:15px}
+    .form-group{margin-bottom:20px}
+    .form-group label{display:block;margin-bottom:8px;font-weight:600;color:#333;font-size:15px}
+    .form-control{width:100%;padding:14px 16px;border:2px solid #e0e0e0;border-radius:12px;font-size:18px;transition:.3s;-webkit-appearance:none;background:#FAFAFA;text-align:center}
+    .form-control:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,164,77,.15);background:white}
+    .radio-group{display:flex;gap:10px;flex-wrap:wrap}
+    .radio-label{flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border:2px solid #e0e0e0;border-radius:12px;cursor:pointer;transition:.2s;font-size:14px;font-weight:600}
+    .radio-label:active{border-color:var(--gold);background:#FFF8E1}
+    .radio-label input[type=radio]{width:18px;height:18px;accent-color:var(--red)}
+    .price-box{background:linear-gradient(135deg,var(--cream),#FFF8E1);padding:20px;border-radius:12px;text-align:center;margin-top:20px;display:none;border:2px solid var(--gold)}
+    .price-box .amount{font-size:32px;font-weight:bold;color:var(--red)}
+    .skip-link{text-align:center;margin-top:5px}
+    .skip-link a{color:#999;text-decoration:none;font-size:13px}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px 15px;box-shadow:0 -2px 10px rgba(0,0,0,.08);display:flex;gap:10px;z-index:100}
+    .btn{display:flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:10px;font-weight:700;cursor:pointer;transition:.2s;flex:1;padding:16px;font-size:16px}
+    .btn:active{transform:scale(.97)}
+    .btn-primary{background:var(--red);color:white}
+    .btn-secondary{background:var(--cream);color:var(--red);border:2px solid var(--red)}
+    .sync-bar{text-align:center;font-size:11px;color:#999;padding:8px;margin-top:10px}
+    @media(min-width:768px){.container{max-width:550px}}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="top-bar"><div class="temple-icon">🛕</div><h1>馬星福德宮</h1><p>七月普渡法會 · 線上報名</p></div>
+  <div class="progress">
+    <div class="step-dot done"><div class="dot">1</div><span>香客</span></div>
+    <div class="step-dot done"><div class="dot">2</div><span>往生</span></div>
+    <div class="step-dot done"><div class="dot">3</div><span>冤親</span></div>
+    <div class="step-dot done"><div class="dot">4</div><span>嬰靈</span></div>
+    <div class="step-dot now"><div class="dot">5</div><span>福桶</span></div>
+    <div class="step-dot"><div class="dot">6</div><span>自訂</span></div>
+    <div class="step-dot"><div class="dot">7</div><span>確認</span></div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-box"></i> 福桶</h2>
+    <div class="bucket-icon">🧧</div>
+    <div class="price-info" id="priceInfo"><i class="fas fa-spinner fa-spin"></i> 載入價格中...</div>
+    
+    <div class="form-group">
+      <label>福桶數量</label>
+      <input type="number" id="qty" class="form-control" min="0" max="100" value="0" onchange="updatePrice()">
+    </div>
+    <div class="form-group">
+      <label>處理方式</label>
+      <div class="radio-group">
+        <label class="radio-label"><input type="radio" name="handling" value="自行迎回" checked onchange="saveData()">🏠 自行迎回</label>
+        <label class="radio-label"><input type="radio" name="handling" value="委託捐贈" onchange="saveData()">🎁 委託捐贈</label>
+      </div>
+    </div>
+    <div class="price-box" id="priceBox"><div class="amount">RM <span id="total">0</span></div><small style="color:#666">福桶費用</small></div>
+    <div class="skip-link"><a onclick="goTo(6)">若無此項目，跳過 →</a></div>
+  </div>
+  <div class="sync-bar" id="syncBar"><span id="syncText">☁️ 檢查中...</span></div>
+</div>
+
+<div class="bottom-nav">
+  <button class="btn btn-secondary" onclick="goTo(4)">上一步</button>
+  <button class="btn btn-primary" onclick="goTo(6)">下一步 <i class="fas fa-arrow-right"></i></button>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+function P(k){return getPrice(k);}
+async function init(){await loadGlobalPrices();document.getElementById('priceInfo').innerHTML=`每桶 <strong>RM${P('BUCKET')}</strong>`;checkSync();loadData();}
+async function checkSync(){try{await fetch(CONFIG.API_URL+'?action=health');document.getElementById('syncBar').innerHTML='<span style="color:#28A745">☁️ 已連接</span>';}catch(e){document.getElementById('syncBar').innerHTML='<span style="color:#DC3545">⚠️ 離線</span>';}}
+function loadData(){const d=localStorage.getItem('reg_bucket');if(d)try{const p=JSON.parse(d);document.getElementById('qty').value=p.quantity||0;const r=document.querySelector(`input[name="handling"][value="${p.handling}"]`);if(r)r.checked=true;}catch(e){}updatePrice();}
+function saveData(){localStorage.setItem('reg_bucket',JSON.stringify({quantity:parseInt(document.getElementById('qty').value)||0,handling:document.querySelector('input[name="handling"]:checked')?.value||'自行迎回'}));}
+function updatePrice(){const q=parseInt(document.getElementById('qty').value)||0;document.getElementById('total').textContent=(q*P('BUCKET')).toLocaleString();document.getElementById('priceBox').style.display=q>0?'block':'none';saveData();}
+function goTo(s){saveData();const p={1:'step1-applicant.html',2:'step2-deceased.html',3:'step3-karmic.html',4:'step4-spirit-baby.html',5:'step5-blessing-bucket.html',6:'step6-custom.html',7:'step7-confirm.html'};window.location.href=p[s];}
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
